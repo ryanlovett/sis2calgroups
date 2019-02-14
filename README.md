@@ -24,6 +24,8 @@ optional arguments:
   -n                 Dry run. Print enrollments without updating CalGroups.
 ```
 
-Example:
-Create a folder and group structure in CalGroups for the current term's course Easyclass 101:
-`sis2calgroups -b edu:berkeley:org:myorg:myorgs_classes -s easyclass -c 101`
+Example
+-------
+Create a folder and group structure in CalGroups for the current term's Driver's Ed 101:
+
+`sis2calgroups -b edu:berkeley:org:myorg:myorgs_classes -s driversed -c 101`
