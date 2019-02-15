@@ -92,7 +92,7 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
             sis_term_id, subject_area, catalog_number
         )
 
-    # filter the student uids by enrollment status
+    # bin the student uids by enrollment status
     uids = {}
     for student_subgroup in student_subgroups:
         subgroup_status = subgroup_statuses[student_subgroup]
@@ -107,8 +107,8 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
             credentials['sis_classes_key'],
             sis_term_id, subject_area, catalog_number)
         # filter the uids by instructor or gsi
-        # in sis, instructors of primary sections are the instructors.
-        # the instructors of the other sections are the gsis.
+        # in sis, "instructors" of primary sections are the *real* instructors.
+        # the "instructors" of the other sections are the gsis.
         for section in sections:
             section_uids = sis.filter_section_instructors(section)
             if sis.section_is_primary(section):
