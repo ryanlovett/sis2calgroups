@@ -29,3 +29,22 @@ Example
 Create a folder and group structure in CalGroups for the current term's Driver's Ed 101:
 
 `sis2calgroups -b edu:berkeley:org:myorg:myorgs_classes -s driversed -c 101`
+
+Credentials
+-----------
+sis2calgroups authenticates to various SIS and CalGroups endpoints.
+Supply the credentials in a JSON file of the form:
+```
+{
+	"sis_enrollments_id": "...",
+	"sis_enrollments_key": "...",
+	"sis_classes_id": "...",
+	"sis_classes_key": "...",
+	"sis_terms_id": "...",
+	"sis_terms_key": "...",
+	"grouper_user": "...",
+	"grouper_pass": "..."
+}
+```
+Request credentials for the SIS Enrollments, Classes, and Terms APIs through
+[API Central](https://api-central.berkeley.edu). Request Grouper/CalGroups access through [CalNet](https://calnetweb.berkeley.edu/calnet-technologists/calgroups-integration/calgroups-api-information) via [calnet-admin@berkeley.edu](mailto:calnet-admin@berkeley.edu).
