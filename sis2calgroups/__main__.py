@@ -68,14 +68,13 @@ def course_name(subject_area, catalog_number):
 def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
     credentials, subgroups, dryrun=False):
 
+    # derive a course name
     course = course_name(subject_area, catalog_number)
-
-    # Convert temporal position (current, next, previous) to a term id
-    if sis_term_id is None or sis_term_id.isalpha():
-        sis_term_id = sis.get_term_id(
-            credentials['sis_terms_id'], credentials['sis_terms_key'],
-            sis_term_id
-        )
+    # determine the numeric term id
+    sis_term_id = sis.normalize_term_id(
+        credentials['sis_terms_id'],
+        credentials['sis_terms_key'],
+        sis_term_id)
 
     if not dryrun:
         grouper_auth = grouper.auth(

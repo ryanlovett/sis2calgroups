@@ -75,6 +75,13 @@ def get_term_id(app_id, app_key, position='Current'):
     terms = get_items(uri, params, headers, 'terms')
     return terms[0]['id']
 
+def normalize_term_id(app_id, app_key, sis_term_id):
+    '''Convert temporal position (current, next, previous) to a numeric term id,
+       or passthrough a numeric term id.'''
+    if sis_term_id is None or sis_term_id.isalpha():
+        sis_term_id = get_term_id(app_id, app_key, sis_term_id)
+    return sis_term_id
+
 def get_lecture_section_ids(e_id, e_key, term_id, subject_area, catalog_number):
     '''
       Given a term, subject, and course number, return the lecture section ids.
