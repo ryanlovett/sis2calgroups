@@ -33,9 +33,8 @@ def create_folders(grouper_auth, base_group, term_id, course_name, subgroups):
         out = grouper.create_group(grouper_auth, group, subgroup)
     return course_group
 
-def populate_groups(grouper_auth, course_group, uids, subgroups):
-    for subgroup in subgroups:
-        group = child_id(course_group, subgroup)
-        num = len(uids[subgroup])
-        logger.info(f"setting {num} users in {group}")
-        grouper.replace_users(grouper_auth, group, uids[subgroup])
+def populate_group(grouper_auth, course_group, subgroup, uids):
+	num = len(uids)
+	group = child_id(course_group, subgroup)
+	logger.info(f"setting {num} users in {group}")
+	grouper.replace_users(grouper_auth, group, uids)

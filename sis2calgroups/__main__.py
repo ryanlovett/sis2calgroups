@@ -35,7 +35,7 @@ secret_keys = [
           'grouper_user', 'grouper_pass'
 ]
 
-subgroups = ['enrolled', 'waitlisted', 'instructors', 'gsis']
+subgroups = ['enrolled', 'waitlisted', 'instructors', 'gsis', 'non-enrolled']
 subgroup_statuses = {
     'enrolled': 'E',
     'waitlisted': 'W',
@@ -122,7 +122,11 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
             print(f'_{subgroup}')
             for uid in uids[subgroup]: print(uid)
     else:
-        calgroups.populate_groups(grouper_auth, course_group, uids, subgroups)
+        # exclude non-enrolled ; that is not sourced from the system of record
+        # so populating here would empty it.
+        for subgroup in set(subgroups) - set(['all', 'non-enrolled']):
+            calgroups.populate_group(grouper_auth, course_group, subgroup,
+                uids[subgroup])
 
 def valid_term(string):
     valid_terms = ['Current', 'Next', 'Previous']
