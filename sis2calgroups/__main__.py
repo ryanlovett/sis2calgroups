@@ -110,7 +110,9 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
         # in sis, "instructors" of primary sections are the *real* instructors.
         # the "instructors" of the other sections are the gsis.
         for section in sections:
+            # fetch the uids of this section's instructors
             section_uids = sis.filter_section_instructors(section)
+            # classify them as instructors or gsis
             if sis.section_is_primary(section):
                 uids['instructors'] = section_uids
             else:

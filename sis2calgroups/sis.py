@@ -15,6 +15,7 @@ sections_uri = enrollments_uri + "/terms/{}/classes/sections/{}"
 classes_sections_uri = "https://apis.berkeley.edu/sis/v1/classes/sections"
 terms_uri = "https://apis.berkeley.edu/sis/v1/terms"
 
+# apparently some courses have LAB without LEC (?)
 section_codes = ['LEC', 'SES', 'WBL', 'LAB']
 
 def filter_lectures(sections, relevant_codes=section_codes):
@@ -32,16 +33,9 @@ def filter_lectures(sections, relevant_codes=section_codes):
 
 def get_items(uri, params, headers, item_type):
     '''Recursively get a list of items (enrollments, ) from the SIS.'''
-    #logger.debug("get_items: {}".format(uri))
-    #logger.debug("  params: {}".format(params))
-    #logger.debug("  headers: {}".format(headers))
     r = requests.get(uri, params=params, headers=headers)
     if r.status_code == 404:
-        logger.debug('NO MORE {}'.format(item_type))
         return []
-    else:
-        pass
-        logger.debug('FOUND {}'.format(item_type))
     data = r.json()
     # Return if there is no response (e.g. 404)
     if 'response' not in data['apiResponse']:
