@@ -1,3 +1,9 @@
+This project is no longer maintained. Please see these instead:
+
+ - https://github.com/ryanlovett/sis-cli
+ - https://github.com/ryanlovett/grouper-cli
+
+
 sis2calgroups
 =============
 Create CalGroups based on enrollment and instructor data in SIS.

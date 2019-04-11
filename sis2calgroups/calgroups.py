@@ -38,3 +38,14 @@ def populate_group(grouper_auth, course_group, subgroup, uids):
 	group = child_id(course_group, subgroup)
 	logger.info(f"setting {num} users in {group}")
 	grouper.replace_users(grouper_auth, group, uids)
+
+def create_all_group(grouper_auth, course_group, group_name):
+	'''Create an "all" group that contains all students, instructors,
+	   admins, etc. We specify a friendly name for the name since Google Groups
+       and perhaps AD will use it.'''
+	group_id = child_id(course_group, 'all')
+	grouper.create_group(grouper_auth, group_id, group_name):
+
+	# put other subgroups into this one
+	uids = get_subgroup_uids(grouper_auth, course_group)
+	grouper.replace_users(grouper_auth, group, uids)

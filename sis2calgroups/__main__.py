@@ -70,10 +70,10 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
 
     # derive a course name
     course = course_name(subject_area, catalog_number)
-    # determine the numeric term id
+
+    # determine the numeric term id (2192) from a temporal one (e.g. "current")
     sis_term_id = sis.normalize_term_id(
-        credentials['sis_terms_id'],
-        credentials['sis_terms_key'],
+        credentials['sis_terms_id'], credentials['sis_terms_key'],
         sis_term_id)
 
     if not dryrun:
@@ -84,7 +84,8 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
             base_group, sis_term_id, course, subgroups)
 
     # fetch student enrollments
-    student_subgroups = set(['enrolled', 'waitlisted', 'dropped']) & set(subgroups)
+    student_subgroups = set(['enrolled', 'waitlisted', 'dropped']) & \
+                        set(subgroups)
     if len(student_subgroups) > 0:
         enrollments = sis.get_enrollments(
             credentials['sis_enrollments_id'],
@@ -128,6 +129,12 @@ def sis2calgroups(base_group, sis_term_id, subject_area, catalog_number,
         for subgroup in set(subgroups) - set(['all', 'non-enrolled']):
             calgroups.populate_group(grouper_auth, course_group, subgroup,
                 uids[subgroup])
+        # our "all" groups always contains the same members
+        group_name = sis.all_group_name(
+            credentials['sis_terms_id'], credentials['sis_terms_key'],
+            subject_area, catalog_number, sis_term_id
+        )
+        calgroups.create_all_group(grouper_auth, course_group, group_name)
 
 def valid_term(string):
     valid_terms = ['Current', 'Next', 'Previous']

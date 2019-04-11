@@ -53,9 +53,19 @@ def get_items(uri, params, headers, item_type):
     # Get the next page's items
     params['page-number'] += 1
     items += get_items(uri, params, headers, item_type)
-    logger.debug('num {}: {}'.format(item_type, len(items)))
-    #logger.debug(items)
+    num = len(items)
+    logger.debug(f'There are {num} items of type {item_type}')
     return items
+
+def get_term_name(app_id, app_key, term_id):
+    '''Given a term id, return the term's friendly name.'''
+    headers = {
+        "Accept": "application/json",
+        "app_id": app_id, "app_key": app_key
+    }
+    uri = f'{terms_uri}/{term_id}'
+    terms = get_items(uri, params, headers, 'terms')
+    return terms[0]['name']
 
 def get_term_id(app_id, app_key, position='Current'):
     '''Given a temporal position of Current, Previous, or Next, return
@@ -183,3 +193,9 @@ def enrollment_status(enrollment):
 
 def filter_enrollment_status(enrollments, status):
     return list(filter(lambda x: enrollment_status(x) == status, enrollments))
+
+def all_group_name(app_id, app_key, subject_area, catalog_number, sis_term_id):
+    '''Stat 243 Fall 2018'''
+    # friendly name for the term, e.g. 2019 Fall
+    sis_term_name = sis.get_term_name(app_id, app_key, sis_term_id)
+    return f'{subject_area}.capitalize() {catalog_number} {sis_term_name}'
